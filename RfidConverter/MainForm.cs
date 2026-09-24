@@ -44,6 +44,15 @@ sealed class MainForm : Form
     private string serBuffer = "";
     private string lastFormatted = "";
 
+    // Istoric structurat pentru export CSV: data | numar_125 (ID brut) | numar_13_5 (cod FFF,CCCCC)
+    private sealed class ScanRecord
+    {
+        public DateTime Time;
+        public long Raw125;
+        public string Code = "";
+    }
+    private readonly List<ScanRecord> records = new();
+
     public MainForm()
     {
         Text = "RFID Converter  -  125 kHz  ->  format FFF,CCCCC";
@@ -163,7 +172,7 @@ sealed class MainForm : Form
             Location = new Point(12, 198),
             Size = new Size(120, 27),
         };
-        btnClearHist.Click += (s, e) => { lstHistory.Items.Clear(); lblCount.Text = "Inregistrari: 0"; };
+        btnClearHist.Click += (s, e) => { records.Clear(); lstHistory.Items.Clear(); lblCount.Text = "Inregistrari: 0"; };
 
         var btnExport = new Button
         {
@@ -206,10 +215,11 @@ sealed class MainForm : Form
         lastFormatted = formatted;
         lblResult.Text = formatted;
         lblDetail.Text = $"Hex: {hex}   |   Facility: {facility}   |   Card: {card}";
-        string ts = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        lstHistory.Items.Add($"{ts}  |  {value}  ->  {formatted}");
+        var rec = new ScanRecord { Time = DateTime.Now, Raw125 = value, Code = formatted };
+        records.Add(rec);
+        lstHistory.Items.Add($"{rec.Time:yyyy-MM-dd HH:mm:ss}  |  {rec.Raw125}  ->  {rec.Code}");
         lstHistory.TopIndex = lstHistory.Items.Count - 1;
-        lblCount.Text = $"Inregistrari: {lstHistory.Items.Count}";
+        lblCount.Text = $"Inregistrari: {records.Count}";
         if (chkClear.Checked) txtInput.Clear();
         txtInput.Focus();
     }
@@ -278,13 +288,15 @@ sealed class MainForm : Form
 
     private void ExportCsv()
     {
-        if (lstHistory.Items.Count == 0) return;
+        if (records.Count == 0) return;
         using var dlg = new SaveFileDialog { Filter = "CSV (*.csv)|*.csv", FileName = "rfid_istoric.csv" };
         if (dlg.ShowDialog() == DialogResult.OK)
         {
-            var lines = lstHistory.Items.Cast<string>();
-            File.WriteAllLines(dlg.FileName, lines, Encoding.UTF8);
-            MessageBox.Show($"Salvat: {dlg.FileName}", "Export",
+            var lines = new List<string>(records.Count + 1) { "data,numar_125,numar_13_5" };
+            foreach (var r in records)
+                lines.Add($"{r.Time:yyyy-MM-dd HH:mm:ss},{r.Raw125},{r.Code}");
+            File.WriteAllLines(dlg.FileName, lines, new UTF8Encoding(true)); // BOM pentru Excel
+            MessageBox.Show($"Salvat: {dlg.FileName} ({records.Count} inregistrari)", "Export",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
