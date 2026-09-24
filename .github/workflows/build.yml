@@ -14,6 +14,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    # necesar pentru crearea Release-ului si atasarea .exe-ului
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout cod
