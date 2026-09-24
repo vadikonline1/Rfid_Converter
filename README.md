@@ -29,7 +29,7 @@ cu facility code + numar card:
    - **Reader serial** (port COM): alege portul + baud rate (uzual 9600),
      apasa *Conectare* — fiecare card scanat apare automat in istoric.
 3. Butonul **Copiaza** pune rezultatul in clipboard, **Export CSV** salveaza
-   istoricul cu coloanele `data,numar_125,numar_13_5` (ex: `2026-09-24 10:15:00,4217212212,093,36148`).
+   istoricul cu coloanele `data;numar_125;numar_13_5` (ex: `2026-09-24 10:15:00;4217212212;093,36148`).
 
 ## Build automat (GitHub Actions)
 

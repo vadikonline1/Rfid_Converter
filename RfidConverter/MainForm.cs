@@ -292,9 +292,9 @@ sealed class MainForm : Form
         using var dlg = new SaveFileDialog { Filter = "CSV (*.csv)|*.csv", FileName = "rfid_istoric.csv" };
         if (dlg.ShowDialog() == DialogResult.OK)
         {
-            var lines = new List<string>(records.Count + 1) { "data,numar_125,numar_13_5" };
+            var lines = new List<string>(records.Count + 1) { "data;numar_125;numar_13_5" };
             foreach (var r in records)
-                lines.Add($"{r.Time:yyyy-MM-dd HH:mm:ss},{r.Raw125},{r.Code}");
+                lines.Add($"{r.Time:yyyy-MM-dd HH:mm:ss};{r.Raw125};{r.Code}");
             File.WriteAllLines(dlg.FileName, lines, new UTF8Encoding(true)); // BOM pentru Excel
             MessageBox.Show($"Salvat: {dlg.FileName} ({records.Count} inregistrari)", "Export",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
