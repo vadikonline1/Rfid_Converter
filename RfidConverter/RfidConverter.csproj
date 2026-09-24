@@ -9,7 +9,12 @@
     <ApplicationTitle>RFID Converter</ApplicationTitle>
     <AssemblyName>RfidConverter</AssemblyName>
     <ApplicationIcon>..\icon.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
+    <Version>1.0.6</Version>
+    <!-- Metadate vizibile in Properties + dialogul SmartScreen -->
+    <Company>vadikonline1</Company>
+    <Product>RFID Converter</Product>
+    <Description>Converteste ID brut RFID 125 kHz in format FFF,CCCCC</Description>
+    <Copyright>Copyright (c) 2026</Copyright>
     <!-- Totul intr-un singur .exe: fara .pdb, cu bibliotecile native incluse -->
     <DebugType>none</DebugType>
     <PublishSingleFile>true</PublishSingleFile>

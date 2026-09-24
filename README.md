@@ -50,6 +50,31 @@ Compilare locala (necesita .NET 8 SDK: `winget install Microsoft.DotNet.SDK.8`):
 dotnet publish RfidConverter -c Release -o dist
 ```
 
+## Windows SmartScreen / antivirus
+
+`.exe`-ul de la Releases este **nesemnat** (fara certificat platit), deci la
+prima rulare Windows SmartScreen poate afisa „Windows protected your PC”
+(editor necunoscut). Aplicatia este compilata din codul public de aici —
+verificabil oricand. Variante:
+
+- **Deblocare fisier descarcat** (o singura data):
+  click dreapta pe `.exe` → Properties → bifeaza **Unblock** → OK.
+- **La avertisment**: *More info* → *Run anyway*.
+- **Reputatie**: cu cat e descarcat/rulat mai mult acelasi fisier, cu atat
+  SmartScreen il semnaleaza mai rar. Fiecare rebuild reseteaza reputatia.
+
+**Semnare cu certificat (recomandat pentru distributie)**: cumpara un
+certificat de code-signing OV/EV (ex: Sectigo, DigiCert), exporta-l ca
+`.pfx`, apoi in repo la **Settings → Secrets → Actions** adauga:
+
+- `CERT_PFX_BASE64` — continutul `.pfx` codificat Base64:
+  `[Convert]::ToBase64String([IO.File]::ReadAllBytes('cert.pfx'))`
+- `CERT_PASSWORD` — parola certificatului
+
+Workflow-ul semneaza automat `.exe`-ul (pasul e sarit daca lipsesc
+secretele). Cu certificat EV, avertismentul SmartScreen dispare imediat;
+cu OV, reputatia se construieste in timp.
+
 ## Variante linie de comanda
 
 ### PowerShell
