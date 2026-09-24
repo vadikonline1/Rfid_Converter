@@ -1,0 +1,44 @@
+name: Build EXE
+
+# Compileaza automat RfidConverter.exe la fiecare push.
+# - la push pe main/master: build + verificare
+# - la tag v* (ex: v1.0.0): build + atasare .exe la GitHub Release
+# - manual: din tab-ul Actions -> Run workflow
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout cod
+        uses: actions/checkout@v4
+
+      - name: Instalare .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Compilare RfidConverter.exe (single-file)
+        run: dotnet publish RfidConverter -c Release -o dist
+
+      - name: Verificare artefact
+        shell: pwsh
+        run: Get-ChildItem dist | Select-Object Name, Length
+
+      - name: Upload artefact (disponibil 90 zile in Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: RfidConverter-win-x64
+          path: dist/RfidConverter.exe
+
+      - name: Atasare .exe la Release (doar la tag v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/RfidConverter.exe

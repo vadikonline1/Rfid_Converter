@@ -1,0 +1,14 @@
+# Build outputs .NET
+bin/
+obj/
+dist/
+publish/
+
+# Executabilul local (154 MB > limita GitHub de 100 MB/fisier).
+# Nu se comite in repo — e generat automat de GitHub Actions.
+/RfidConverter.exe
+
+# Windows / VS
+.vs/
+*.user
+Desktop.ini
