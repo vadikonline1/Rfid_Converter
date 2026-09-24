@@ -75,6 +75,20 @@ Workflow-ul semneaza automat `.exe`-ul (pasul e sarit daca lipsesc
 secretele). Cu certificat EV, avertismentul SmartScreen dispare imediat;
 cu OV, reputatia se construieste in timp.
 
+**Verificarea fisierului descarcat**: fiecare Release contine si
+`SHA256SUMS.txt` (generat automat de CI). Compara amprenta:
+
+```powershell
+(Get-FileHash .\RfidConverter.exe -Algorithm SHA256).Hash
+# trebuie sa coincida cu valoarea din SHA256SUMS.txt
+```
+
+Daca amprentele coincid, fisierul e exact cel compilat public de
+GitHub Actions din codul acestui repo — poti apasa linistit *Keep* /
+*Run anyway* la avertismentul browserului. Avertismentul in sine
+(`Make sure you trust ... before you open it`) dispare complet doar cu
+certificat de semnare + reputatie de descarcari, ca la SmartScreen.
+
 ## Variante linie de comanda
 
 ### PowerShell

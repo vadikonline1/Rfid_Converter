@@ -78,6 +78,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = "${{ github.ref_name }}"
+          $hash = (Get-FileHash dist/RfidConverter.exe -Algorithm SHA256).Hash
+          "$hash  RfidConverter.exe" | Out-File dist/SHA256SUMS.txt -Encoding ascii
+          "SHA256: $hash"
           gh release view "$tag" 2>$null | Out-Null
           if ($LASTEXITCODE -ne 0) { gh release create "$tag" --title "$tag" --generate-notes }
-          gh release upload "$tag" dist/RfidConverter.exe --clobber
+          gh release upload "$tag" dist/RfidConverter.exe dist/SHA256SUMS.txt --clobber
