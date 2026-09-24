@@ -32,13 +32,10 @@ jobs:
 
       - name: Verificare artefact
         shell: pwsh
-        run: Get-ChildItem dist | Select-Object Name, Length
-
-      - name: Upload artefact (disponibil 90 zile in Actions)
-        uses: actions/upload-artifact@v5
-        with:
-          name: RfidConverter-win-x64
-          path: dist/RfidConverter.exe
+        run: |
+          $exe = Get-ChildItem dist/RfidConverter.exe
+          "RfidConverter.exe = $([math]::Round($exe.Length/1MB,1)) MB"
+          if ($exe.Length -lt 50MB) { throw "Artefact suspect de mic!" }
 
       # Creeaza Release-ul (daca nu exista) si ataseaza .exe-ul,
       # folosind GitHub CLI preinstalat pe runner (fara actiuni externe).
