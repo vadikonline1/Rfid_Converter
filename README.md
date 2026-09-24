@@ -1,10 +1,10 @@
-# RFID Converter — 125 kHz → format `FFF, CCCCC`
+# RFID Converter — 125 kHz → format `FFF,CCCCC`
 
 Converteste ID-ul brut citit de un RFID reader de **125 kHz** in formatul
 cu facility code + numar card:
 
 ```
-4217212212  →  093, 36148
+4217212212  →  093,36148
 ```
 
 ## Structura proiectului
@@ -55,7 +55,7 @@ dotnet publish RfidConverter -c Release -o dist
 ### PowerShell
 
 ```powershell
-.\convert_rfid.ps1 4217212212        # o valoare  ->  093, 36148
+.\convert_rfid.ps1 4217212212        # o valoare  ->  093,36148
 .\convert_rfid.ps1                    # mod interactiv
 .\convert_rfid.ps1 -Serial COM3       # citire continua de pe port serial
 .\convert_rfid.ps1 -Serial COM3 -Baud 9600
@@ -90,7 +90,7 @@ Valoarea bruta este un numar pe 32 de biti:
 - **facility** = `(valoare >> 16) AND 0xFF` → `93` → afisat `093`
 - **card** = `valoare AND 0xFFFF` → `36148`
 
-Rezultat: `093, 36148`
+Rezultat: `093,36148`
 
 ## Nota importanta: 125 kHz vs 13.56 MHz
 

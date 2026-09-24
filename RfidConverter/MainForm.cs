@@ -4,7 +4,7 @@ using System.Text;
 namespace RfidConverter;
 
 /// <summary>
-/// Conversie ID brut (reader 125 kHz) -&gt; format "FFF, CCCCC".
+/// Conversie ID brut (reader 125 kHz) -&gt; format "FFF,CCCCC".
 /// Structura pe 32 biti: bitii 16..23 = facility, bitii 0..15 = card.
 /// Ex: 4217212212 (0xFB5D8D34) -&gt; facility 0x5D=93, card 0x8D34=36148.
 /// </summary>
@@ -14,7 +14,7 @@ static class RfidConvert
     {
         int facility = (int)((value >> 16) & 0xFF);
         int card = (int)(value & 0xFFFF);
-        return (facility, card, $"{facility:D3}, {card}", $"0x{value:X8}");
+        return (facility, card, $"{facility:D3},{card}", $"0x{value:X8}");
     }
 
     public static string DigitsOnly(string text)
@@ -46,7 +46,7 @@ sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "RFID Converter  -  125 kHz  ->  format FFF, CCCCC";
+        Text = "RFID Converter  -  125 kHz  ->  format FFF,CCCCC";
         ClientSize = new Size(584, 602);
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedDialog;

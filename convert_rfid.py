@@ -1,6 +1,6 @@
 """
 Converteste ID-ul brut citit de RFID reader (125 kHz) in formatul:
-    4217212212  ->  093, 36148
+    4217212212  ->  093,36148
 
 Structura valorii pe 32 biti:
     bits 16..23 : facility code
@@ -18,7 +18,7 @@ import sys
 def convert(raw: int) -> str:
     facility = (raw >> 16) & 0xFF
     card = raw & 0xFFFF
-    return f"{facility:03d}, {card}"
+    return f"{facility:03d},{card}"
 
 
 def watch(port: str, baud: int = 9600) -> None:

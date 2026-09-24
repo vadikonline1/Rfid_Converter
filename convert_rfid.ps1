@@ -1,6 +1,6 @@
 <#
     Converteste ID-ul brut citit de RFID reader (125 kHz) in formatul:
-        4217212212  ->  093, 36148
+        4217212212  ->  093,36148
 
     Utilizare:
         .\convert_rfid.ps1 4217212212
@@ -17,7 +17,7 @@ param(
 function Convert-RfidId([long]$Value) {
     $facility = ($Value -shr 16) -band 0xFF
     $card     = $Value -band 0xFFFF
-    return ("{0:D3}, {1}" -f $facility, $card)
+    return ("{0:D3},{1}" -f $facility, $card)
 }
 
 if ($Serial) {
